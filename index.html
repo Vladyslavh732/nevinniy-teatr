@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>НЕвинный театр — Трилогия Невинности</title>
+  <meta name="theme-color" content="#130914">
+  <style>
+    :root{--pink:#ff4f9a;--hot:#ff2388;--ink:#130914;--panel:#1b1020;--muted:#d5b8d0}
+    *{box-sizing:border-box}
+    body{margin:0;background:radial-gradient(ellipse at top,#32122d 0,#130914 55%,#08060a 100%);color:#fff;font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif}
+    .wrap{max-width:1120px;margin:auto;padding:24px 16px 56px}
+    header{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:18px}
+    .brand{font-weight:900;letter-spacing:.04em;font-size:clamp(20px,4vw,30px);color:#fff}
+    .brand span{color:var(--pink)}
+    .tag{border:1px solid #733054;border-radius:999px;padding:8px 12px;color:#ffc3df;font-size:12px;letter-spacing:.08em}
+    .scene{display:block;width:100%;height:auto;border-radius:18px;border:1px solid #61284b;box-shadow:0 20px 70px #0009}
+    .caption{text-align:center;color:#d9b7cf;font-size:13px;margin:10px 0 28px}
+    .booking{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+    .panel{background:linear-gradient(145deg,#211222,#140d18);border:1px solid #64294c;border-radius:18px;padding:22px;box-shadow:0 12px 34px #0005}
+    h1{font-size:clamp(26px,5vw,42px);line-height:1.05;margin:0 0 10px}
+    h1 span{color:var(--pink)}
+    .sub{color:var(--muted);line-height:1.55;margin:0 0 20px}
+    h2{font-size:16px;margin:22px 0 10px}
+    .choices{display:flex;flex-wrap:wrap;gap:8px}
+    button{font:inherit;cursor:pointer;transition:transform .12s,background .12s,border-color .12s}
+    button:active{transform:scale(.97)}
+    .choice{background:#1b1020;border:1px solid #61304d;color:#f7dce9;border-radius:11px;padding:10px 13px}
+    .choice.active,.seat.selected{background:var(--pink);border-color:var(--pink);color:#260b19}
+    .seats{display:grid;grid-template-columns:repeat(8,minmax(0,1fr));gap:7px;margin-top:12px}
+    .seat{aspect-ratio:1;background:#24172a;border:1px solid #70405e;border-radius:5px;color:#eec9dd;padding:0;font-size:12px}
+    .seat.taken{opacity:.3;cursor:not-allowed}
+    .legend{color:#bda1b7;font-size:12px;margin-top:9px}
+    .summary{display:flex;align-items:center;justify-content:space-between;gap:12px;border-top:1px solid #512440;margin-top:20px;padding-top:18px}
+    .price{font-size:24px;font-weight:800;color:var(--pink)}
+    .price small{display:block;font-size:12px;color:#d9b7cf;font-weight:500;margin-top:4px}
+    .primary{border:0;border-radius:12px;padding:14px 18px;background:linear-gradient(100deg,#ff3d91,#ff77b2);color:#250b18;font-weight:850;box-shadow:0 8px 22px #ff238833}
+    .primary:hover{filter:brightness(1.08)}
+    .full{width:100%;margin-top:18px}
+    footer{text-align:center;color:#a98aa3;font-size:12px;margin-top:26px}
+    .heart{color:var(--pink)}
+    dialog{background:#1a0e1c;color:#fff;border:1px solid #a83d75;border-radius:20px;max-width:440px;width:calc(100% - 32px);padding:26px;box-shadow:0 24px 90px #000b}
+    dialog::backdrop{background:#050207c9;backdrop-filter:blur(5px)}
+    dialog h2{font-size:26px;margin:0 0 10px;color:var(--pink)}
+    dialog p{line-height:1.5;color:#e8cfe0}
+    .modal-actions{display:flex;gap:10px;margin-top:18px}
+    .secondary{border:1px solid #70405e;background:transparent;color:#f8ddeb;border-radius:12px;padding:12px 15px}
+    @media(max-width:720px){.booking{grid-template-columns:1fr}.wrap{padding:16px 12px 38px}.panel{padding:18px}.seats{gap:5px}.summary{align-items:flex-start;flex-direction:column}.primary{width:100%}.tag{font-size:10px}}
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <header>
+      <div class="brand"><span>НЕ</span>винный театр <span class="heart">♥</span></div>
+      <div class="tag">ТОЛЬКО ДЛЯ ИЗБРАННЫХ · 18+</div>
+    </header>
+
+    <img class="scene" src="poster-scene.png" alt="Неоновая афиша Трилогии Невинности на экране ноутбука">
+    <div class="caption">Макет сайта — все кнопки ниже работают, но реальные платежи не принимаются.</div>
+
+    <section class="booking">
+      <div class="panel">
+        <h1>Трилогия <span>Невинности</span> ♥</h1>
+        <p class="sub">Три книги. Одна невинность. И (ну почти). История о котиках, которые перестали быть невинными. Провокационно. Смешно. Неожиданно.</p>
+        <div class="tag">ПРЕМЬЕРА · 2 ч 45 мин · 18+</div>
+
+        <h2>Выберите дату</h2>
+        <div class="choices" id="dates">
+          <button class="choice active" data-value="Сегодня, 14.04">Сегодня<br>14.04</button>
+          <button class="choice" data-value="Завтра, 15.04">Завтра<br>15.04</button>
+          <button class="choice" data-value="16.04">Ср<br>16.04</button>
+          <button class="choice" data-value="17.04">Чт<br>17.04</button>
+          <button class="choice" data-value="18.04">Пт<br>18.04</button>
+        </div>
+
+        <h2>Выберите время</h2>
+        <div class="choices" id="times">
+          <button class="choice" data-value="16:20">16:20</button>
+          <button class="choice" data-value="18:45">18:45</button>
+          <button class="choice active" data-value="21:10">21:10</button>
+          <button class="choice" data-value="23:50">23:50</button>
+        </div>
+      </div>
+
+      <div class="panel">
+        <h2 style="margin-top:0">Выберите места в зале</h2>
+        <div class="seats" id="seats" aria-label="Места в зале"></div>
+        <div class="legend">■ выбрано &nbsp; □ свободно &nbsp; × занято</div>
+        <div class="summary">
+          <div>
+            <div class="price" id="price">😘 × 1</div>
+            <small id="priceNote">Один поцелуйчик за билет</small>
+          </div>
+          <div id="count">1 билет</div>
+        </div>
+        <button class="primary full" id="checkout">Оформить заказ ♥</button>
+      </div>
+    </section>
+
+    <footer>НЕвинный театр · Оплата принимается исключительно по взаимному согласию <span class="heart">♥</span></footer>
+  </main>
+
+  <dialog id="orderDialog">
+    <h2>Заказ почти оформлен 💋</h2>
+    <p id="orderText">Для завершения оплаты предъявите поцелуйчик в кассе.</p>
+    <p><strong>Никаких настоящих платежей — только шутка и хорошее настроение.</strong></p>
+    <div class="modal-actions">
+      <button class="primary" id="confirm">Подтвердить ♥</button>
+      <button class="secondary" id="close">Закрыть</button>
+    </div>
+  </dialog>
+
+  <script>
+    const seatsEl = document.getElementById('seats');
+    const selected = new Set([20]);
+    const taken = new Set([2, 7, 14, 27, 31, 42]);
+    for (let i = 0; i < 48; i++) {
+      const b = document.createElement('button');
+      b.className = 'seat' + (taken.has(i) ? ' taken' : '') + (selected.has(i) ? ' selected' : '');
+      b.textContent = taken.has(i) ? '×' : String(i + 1);
+      b.setAttribute('aria-label', taken.has(i) ? 'Место занято' : 'Место ' + (i + 1));
+      if (!taken.has(i)) b.addEventListener('click', () => {
+        if (selected.has(i)) selected.delete(i); else selected.add(i);
+        b.classList.toggle('selected', selected.has(i));
+        updateTotal();
+      });
+      seatsEl.appendChild(b);
+    }
+
+    function wireChoices(id) {
+      document.querySelectorAll('#' + id + ' .choice').forEach(btn => {
+        btn.addEventListener('click', () => {
+          document.querySelectorAll('#' + id + ' .choice').forEach(x => x.classList.remove('active'));
+          btn.classList.add('active');
+        });
+      });
+    }
+    wireChoices('dates'); wireChoices('times');
+
+    function updateTotal() {
+      const n = selected.size;
+      document.getElementById('price').textContent = '😘 × ' + n;
+      document.getElementById('priceNote').textContent = n === 1 ? 'Один поцелуйчик за билет' : 'Поцелуйчиков за ' + n + (n > 1 ? ' билета(ов)' : ' билет');
+      document.getElementById('count').textContent = n + (n === 1 ? ' билет' : n > 1 && n < 5 ? ' билета' : ' билетов');
+    }
+    const dlg = document.getElementById('orderDialog');
+    document.getElementById('checkout').addEventListener('click', () => {
+      if (!selected.size) { alert('Сначала выбери хотя бы одно место ♥'); return; }
+      const date = document.querySelector('#dates .active').dataset.value;
+      const time = document.querySelector('#times .active').dataset.value;
+      document.getElementById('orderText').textContent = 'Выбрано мест: ' + selected.size + '. Дата: ' + date + '. Сеанс: ' + time + '. Стоимость: ' + selected.size + ' поцелуйчик(а).';
+      dlg.showModal();
+    });
+    document.getElementById('close').addEventListener('click', () => dlg.close());
+    document.getElementById('confirm').addEventListener('click', () => {
+      dlg.close();
+      alert('Заказ принят… в мире фантазии 😽 Не забудь поцелуйчик!');
+    });
+  </script>
+</body>
+</html>
